@@ -878,7 +878,7 @@ class LRA:
             # set self._d if it is None 
             if self._d is None:
                 # self._d = (torch.sum(v*v)/torch.sum(h*h))**0.25 * torch.ones_like(v)
-                self._d = (torch.mean(v*v))**(1/4) * (torch.mean(h**4))**(-1/8) * torch.ones_like(v)
+                self._d = v.norm().sqrt() / h.norm(p=4).sqrt() * h.numel()
             # update self._U, _V and _d
             update_precond_UVd_math_(self._U, self._V, self._d, v, h, self.lr_preconditioner, self.step_normalizer, self._tiny)
             # if self.exact_hessian_vector_product:
